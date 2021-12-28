@@ -60,7 +60,7 @@ class Scrape:
             driver.get(page_url)
 
             try:
-                WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#listResults ul.bi-list")))
+                WebDriverWait(driver, 8).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#listResults ul.bi-list")))
                 retry = 6
             except:
                 status = self.check_page(driver)
@@ -73,10 +73,11 @@ class Scrape:
                 # 其他错误重试5次
                 if retry > 0:
                     retry -= 1
-                    logger.warning('Encounter an unexpect error, retry')
+                    logger.error('Encounter an unexpect error, retry')
+                    driver.close()
                     continue
                 else:
-                    logger.error(f'Something is wrong, please check')
+                    logger.error(f'Something is wrong, please check Pagesjaunes')
                     exit(-1)
 
             soup = BeautifulSoup(driver.page_source, 'lxml')
@@ -129,9 +130,12 @@ class Scrape:
 
     def check_page(self, driver):
         """检查页面加载情况"""
-        e = driver.find_element_by_class_name('pdr-msg')
-        if e:
-            if 'Cette personne ne souhaite peut-être pas paraître dans nos annuaires' in e.text:
-                # 超出页数范围
-                return 'end'
+        try:
+            e = driver.find_element_by_class_name('pdr-msg')
+            if e:
+                if 'Cette personne ne souhaite peut-être pas paraître dans nos annuaires' in e.text:
+                    # 超出页数范围
+                    return 'end'
+        except:
+            return 'unexpect error'
 
