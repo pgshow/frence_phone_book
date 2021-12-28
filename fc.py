@@ -11,6 +11,10 @@ def init_base_cap(options):
     options.add_argument("--disable-accelerated-jpeg-decoding")
     options.add_argument("--test-type=ui")
     options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--disable-gpu")
+    # options.add_argument("--disable-software-rasterizer")
+    # options.add_argument("--log-level=3")
+    # options.add_argument("--silent")
 
     prefs = {
         'profile.default_content_setting_values': {
@@ -19,6 +23,7 @@ def init_base_cap(options):
         }
     }
     options.add_experimental_option("prefs", prefs)
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])  # close mgs: DevTools listening on xxxx
 
 
 def add_stealth_js(driver):
