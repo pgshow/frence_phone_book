@@ -14,9 +14,10 @@ from bs4 import BeautifulSoup
 
 
 class Scrape:
-    def __init__(self, name, location):
+    def __init__(self, name, location, idOu):
         self.name = name
         self.location = location
+        self.idOu = idOu
 
     def run(self):
         logger.info(f'start scrape location: {self.location}, name: {self.name}')
@@ -26,7 +27,7 @@ class Scrape:
         try:
 
             if self.name != '':
-                url = f"https://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui={quote(self.name)}&ou={quote(self.location)}&univers=pagesblanches&idOu="
+                url = f"https://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui={quote(self.name)}&ou={quote(self.location)}&univers=pagesblanches&idOu={self.idOu}"
 
                 self.crwal(url, data)
 
@@ -34,7 +35,7 @@ class Scrape:
                 logger.error("Your link doesn't have a name!")
                 exit(-1)
                 # for a in fc.get_letters():
-                #     url = f"https://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui={a}&ou={quote(self.location)}&univers=pagesblanches&idOu="
+                #     url = f"https://www.pagesjaunes.fr/pagesblanches/recherche?quoiqui={a}&ou={quote(self.location)}&univers=pagesblanches&idOu={self.idOu}"
                 #     self.crwal(url, data)
 
         except Exception as e:

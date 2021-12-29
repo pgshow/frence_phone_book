@@ -12,19 +12,20 @@ from loguru import logger
 @click.option('--location', default="", help='The location.')
 def run(link, name, location):
     if link:
-        tmp = re.search(r'quoiqui=(.+?)&ou=(.+?)&univers', link)
-        if not tmp or len(tmp.groups()) != 2:
-            logger.error('Link is illegal, must include Name and Location')
+        tmp = re.search(r'quoiqui=(.+?)&ou=(.+?)&univers.+?&idOu=([0-9A-Z]+)&', link)
+        if not tmp or len(tmp.groups()) != 3:
+            logger.error('Link is illegal, must include Name and Location, and idOu')
             exit(-1)
 
         name = fc.str_filter(tmp.group(1))
         location = fc.str_filter(tmp.group(2))
+        idOu = tmp.group(3)
     else:
         if not location:
             logger.error('Location can not be empty')
             exit(-1)
 
-    scrape_obj = Scrape(name, location)
+    scrape_obj = Scrape(name, location, idOu)
     scrape_obj.run()
 
 if __name__ == '__main__':
