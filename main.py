@@ -14,7 +14,7 @@ def run(link, name, location):
     if link:
         tmp = re.search(r'quoiqui=(.+?)&ou=(.+?)&univers.+?&idOu=([0-9A-Z]+)', link)
         if not tmp or len(tmp.groups()) != 3:
-            logger.error('Link is illegal, must include Name and Location, and idOu')
+            logger.error('Link is illegal, must include Name, Location and idOu')
             exit(-1)
 
         name = fc.str_filter(tmp.group(1))
