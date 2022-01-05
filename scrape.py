@@ -54,7 +54,7 @@ class Scrape:
         while 1:
             driver = fc.get_driver()
 
-            time.sleep(5)
+            time.sleep(10)
             page_url = f"{url}&page={i}"
             logger.info(f"Crwal: {page_url}")
 
@@ -89,7 +89,11 @@ class Scrape:
                 name = item.select_one('h3').text.strip()
 
                 # 信息页路径
-                path_tmp = json.loads(item.select_one('.bi-denomination')['data-pjlb'])
+                try:
+                    path_tmp = json.loads(item.select_one('.bi-denomination')['data-pjlb'])
+                except:
+                    continue
+
                 path = base64.b64decode(path_tmp['url']).decode('ascii')
 
                 if not self.filter(name, path):
