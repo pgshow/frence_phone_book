@@ -28,5 +28,6 @@ def run(link, name, location):
     scrape_obj = Scrape(name, location, idOu)
     scrape_obj.run()
 
+
 if __name__ == '__main__':
     run()

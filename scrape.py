@@ -84,6 +84,7 @@ class Scrape:
             soup = BeautifulSoup(driver.page_source, 'lxml')
             items = soup.select('li.bi')
 
+            personal = []
             for item in items:
                 # 姓名
                 name = item.select_one('h3').text.strip()
@@ -98,6 +99,8 @@ class Scrape:
 
                 if not self.filter(name, path):
                     continue
+
+                personal.append(item)
 
                 # 找出多个电话
                 phone_tmp = item.select_one('.bi-fantomas').text.replace(' ', '')
@@ -116,6 +119,7 @@ class Scrape:
 
                 data.append((name, phone_nums, address, ''))
 
+            logger.info(f'Find {len(items)} info - {len(personal)} are personal info')
             i += 1
 
             try:
@@ -143,4 +147,12 @@ class Scrape:
                     return 'end'
         except:
             return 'unexpect error'
+
+    def extract_nav(self, driver):
+        """获取页码数"""
+        try:
+            page_tmp = driver.select_one('pagination-compteur').text
+
+        except:
+            return 0
 
